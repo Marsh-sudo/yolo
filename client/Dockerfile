@@ -1,5 +1,6 @@
+
 #nodejs lightweight base image
-FROM  node:14-alpine
+FROM  node:16-alpine3.17  
 
 #client workdir
 WORKDIR /app/client
@@ -8,7 +9,7 @@ WORKDIR /app/client
 COPY package*.json ./
 
 #install client dependancies
-RUN npm install
+RUN npm ci --production
 
 # Copy the rest of the project files
 COPY . .
