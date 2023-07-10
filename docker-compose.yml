@@ -1,0 +1,22 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules:/app/node_modules # for caching node modules in
+    ports:
+        - 3000:3000
+    restart: "always"
+    
+  
+  backend:
+    backend:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      ports:
+        - 5000:5000
+      restart: "always"
+      
