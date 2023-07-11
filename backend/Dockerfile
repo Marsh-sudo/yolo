@@ -16,5 +16,7 @@ COPY . .
 
 VOLUME /data/db
 
+EXPOSE  5000
+
 #run client project
 CMD ["npm", "start"]
