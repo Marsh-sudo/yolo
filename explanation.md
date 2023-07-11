@@ -32,6 +32,9 @@
 
 -  `CMD` directive used to run the container after image build
 
+I used `npm ci` as we want to make sure you’re doing a clean install of your dependencies. It can be significantly faster than a regular npm install by skipping certain user-oriented features. It is also more strict than a regular install, which can help catch errors or inconsistencies caused by the incrementally-installed local environments of most npm users.
+
+- Find images at docker hub: https://hub.docker.com/u/marshkelvin0 named client && backend images
 
 ## Docker-Compose
 - For the docker compose, I created two services using the client and backend containers I created.
