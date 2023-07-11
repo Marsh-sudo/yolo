@@ -14,5 +14,7 @@ RUN npm ci --production
 # Copy the rest of the project files
 COPY . .
 
+VOLUME /data/db
+
 #run client project
 CMD ["npm", "start"]
