@@ -24,12 +24,12 @@ services:
     networks:
       - yoloProduct
     volumes:
-      -mongodb_data:/data/db
+      - ./backend/mongodb_data:/data/db
 
 
 networks:
   yoloProduct:
 
 volumes:
-  -mongodb_data:
+  -./backend/mongodb_data:
       
