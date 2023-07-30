@@ -18,3 +18,23 @@
       yum:
         name: "https://rpms.remirepo.net/enterprise/remi-release-7.rpm"
         state: present
+
+  tasks:
+  - name: Ensure yolo project exists
+    file: "path={{ node_apps_location }} state=directory"
+
+  - name: Copy yolo project to the server
+    copy:
+      src: "{{ item }}"
+      dest: "{{ node_apps_location }}/{{ item }}"
+    with_items:
+      - client/
+      - backend/
+      - docker-compose.yml
+  - name: Ensure client docker image is built from the client folder
+    docker_image:
+      name: client
+      source: build
+      build: 
+        path: client
+      state: present
