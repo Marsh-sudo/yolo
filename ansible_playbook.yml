@@ -31,10 +31,25 @@
       - client/
       - backend/
       - docker-compose.yml
+      
   - name: Ensure client docker image is built from the client folder
     docker_image:
       name: client
       source: build
       build: 
         path: client
+      state: present
+
+  - name: Ensure the client container is running.
+    docker_container:
+      image: client:latest
+      name: client
+      state: started
+
+  - name: Ensure backend docker image is built from the backend folder
+    docker_image:
+      name: backend
+      source: build
+      build: 
+        path: backend
       state: present
