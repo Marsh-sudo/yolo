@@ -1,22 +1,33 @@
 ---
 # tasks file for backend
-  - name: Clone the frontend code from GitHub
+  - name: Clone the backend code from GitHub
     git:
       repo: "{{ github_repo }}"
-      dest: "{{ yolo_location }}/backend"
+      dest: "{{ yolo_location }}"
       clone: yes
       version: master
+
+  - name: Install Docker and Docker Compose
+    apt:
+      name: ['docker.io', 'docker-compose']
+      state: present
+
+  - name: Enable Docker service
+    service:
+      name: docker
+      enabled: yes
+      state: started
 
   - name: Ensure backend docker image is built from the backend folder
     docker_image:
       name: backend
       source: build
       build: 
-        path: backend
+        path: "{{ yolo_location }}/backend"
       state: present
 
   - name: Ensure the backend container is running.
     docker_container:
-      image: backend:1.0.2
+      image: backend:latest
       name: backend
       state: started
