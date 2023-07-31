@@ -3,53 +3,76 @@
   become: yes
 
   vars:
-    node_apps_location: /usr/local/opt/node
+    yolo_location: "/vagrant/yolo_app"
+    github_repo: "https://github.com/Marsh-sudo/yolo"
 
-  pre_tasks:
-  - name: Install EPEL repo.
-      yum: name=epel-release state=present
+  roles:
+    - nodejs
 
-  - name: Import Remi GPG key.
-      rpm_key:
-        key: "https://rpms.remirepo.net/RPM-GPG-KEY-remi"
-        state: present
-
-  - name: Install Remi repo.
-      yum:
-        name: "https://rpms.remirepo.net/enterprise/remi-release-7.rpm"
-        state: present
 
   tasks:
-  - name: Ensure yolo project exists
-    file: "path={{ node_apps_location }} state=directory"
+    - name: Install required packages
+      apt:
+        name: ['git', 'curl']
+        state: present
+        update_cache: yes
 
-  - name: Copy yolo project to the server
-    copy:
-      src: "{{ item }}"
-      dest: "{{ node_apps_location }}/{{ item }}"
-    with_items:
-      - client/
-      - backend/
-      - docker-compose.yml
+    - name: Clone the code from GitHub
+      git:
+        repo: "{{ github_repo }}"
+        dest: "{{ yolo_location }}"
+        clone: yes
+
+    - name: Ensure yolo project exists
+      file: "path={{ node_apps_location }} state=directory"
+
+    - name: Copy yolo project to the server
+      copy:
+        src: "{{ item }}"
+        dest: "{{ node_apps_location }}/{{ item }}"
+      with_items:
+        - client/
+        - backend/
+        - docker-compose.yml
       
-  - name: Ensure client docker image is built from the client folder
-    docker_image:
-      name: client
-      source: build
-      build: 
-        path: client
-      state: present
+    - name: Ensure client docker image is built from the client folder
+      docker_image:
+        name: client
+        source: build
+        build: 
+          path: client
+        state: present
 
-  - name: Ensure the client container is running.
-    docker_container:
-      image: client:latest
-      name: client
-      state: started
+    - name: Ensure the client container is running.
+      docker_container:
+        image: client:1.0.2
+        name: client
+        state: started
 
-  - name: Ensure backend docker image is built from the backend folder
-    docker_image:
-      name: backend
-      source: build
-      build: 
-        path: backend
-      state: present
+    - name: Ensure backend docker image is built from the backend folder
+      docker_image:
+        name: backend
+        source: build
+        build: 
+          path: backend
+        state: present
+
+    - name: Ensure the backend container is running.
+      docker_container:
+        image: backend:1.0.2
+        name: backend
+        state: started
+
+    - name: Generate Docker Compose File
+      template:
+        src: "{{ items }}"
+        dest: "{{ node_apps_location }}/docker-compose.yml"
+      with_items:
+        - docker-compose.yml
+      tags:
+        - docker_compose
+
+    - name: Start Docker Compose
+      command: "docker-compose -f {{ node_apps_location }}/docker-compose.yml up -d"
+      tags:
+        - docker_compose
