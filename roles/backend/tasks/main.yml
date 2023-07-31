@@ -1,0 +1,22 @@
+---
+# tasks file for backend
+  - name: Clone the frontend code from GitHub
+    git:
+      repo: "{{ github_repo }}"
+      dest: "{{ yolo_location }}/backend"
+      clone: yes
+      version: master
+
+  - name: Ensure backend docker image is built from the backend folder
+    docker_image:
+      name: backend
+      source: build
+      build: 
+        path: backend
+      state: present
+
+  - name: Ensure the backend container is running.
+    docker_container:
+      image: backend:1.0.2
+      name: backend
+      state: started
