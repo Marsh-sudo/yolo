@@ -3,11 +3,13 @@
   become: yes
 
   vars:
-    yolo_location: "/vagrant/yolo_app"
+    yolo_location: "/Devops/yolo_app"
     github_repo: "https://github.com/Marsh-sudo/yolo"
 
   roles:
     - nodejs
+    - backend
+    - client
 
 
   tasks:
@@ -24,55 +26,10 @@
         clone: yes
 
     - name: Ensure yolo project exists
-      file: "path={{ node_apps_location }} state=directory"
+      file: "path={{ yolo_location }} state=directory"
 
-    - name: Copy yolo project to the server
-      copy:
-        src: "{{ item }}"
-        dest: "{{ node_apps_location }}/{{ item }}"
-      with_items:
-        - client/
-        - backend/
-        - docker-compose.yml
-      
-    - name: Ensure client docker image is built from the client folder
-      docker_image:
-        name: client
-        source: build
-        build: 
-          path: client
-        state: present
-
-    - name: Ensure the client container is running.
-      docker_container:
-        image: client:1.0.2
-        name: client
-        state: started
-
-    - name: Ensure backend docker image is built from the backend folder
-      docker_image:
-        name: backend
-        source: build
-        build: 
-          path: backend
-        state: present
-
-    - name: Ensure the backend container is running.
-      docker_container:
-        image: backend:1.0.2
-        name: backend
-        state: started
-
-    - name: Generate Docker Compose File
-      template:
-        src: "{{ items }}"
-        dest: "{{ node_apps_location }}/docker-compose.yml"
-      with_items:
-        - docker-compose.yml
-      tags:
-        - docker_compose
 
     - name: Start Docker Compose
-      command: "docker-compose -f {{ node_apps_location }}/docker-compose.yml up -d"
+      command: "docker-compose -f {{ yolo_location }}/docker-compose.yml up -d"
       tags:
         - docker_compose
