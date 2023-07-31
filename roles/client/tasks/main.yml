@@ -1,0 +1,21 @@
+---
+# tasks file for client
+  - name: Clone the frontend code from GitHub
+    git:
+      repo: "{{ github_repo }}"
+      dest: "{{ yolo_location }}/client"
+      clone: yes
+
+  - name: Ensure client docker image is built from the client folder
+    docker_image:
+      name: client
+      source: build
+      build: 
+        path: client
+      state: present
+
+  - name: Ensure the client container is running.
+    docker_container:
+      image: client:1.0.2
+      name: client
+      state: started
