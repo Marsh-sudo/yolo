@@ -1,6 +1,10 @@
 ---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    
 - name: Install Node.js (npm plus all its dependencies).
-  yum: name=npm state=present enablerepo=epel
+  apt: name=npm state=present
 
 - name: Install forever module (to run our Node.js app).
   npm: name=forever global=yes state=present
