@@ -5,7 +5,7 @@
 
 - We set `become` is yes this is to allow our playbook to perform tasks as the root user on our servers.
 
-- We defined variables to be used using the `vars` module where we defined the location of where app will be located on the servers eg `/Devops/yolo_app` and also set a variable for our github repo which ansible will clone.
+- We defined variables to be used using the `vars` module where we defined the location of where app will be located on the servers eg `/Devops/yolo_app` and also set a variable for our github repo which ansible will clone. `github_repo: "https://github.com/Marsh-sudo/yolo"`
 
 # Roles
 - For the roles i created a directory called roles where we will define where our ansible roles will be defined
@@ -36,3 +36,7 @@
 - On our ansible playbook, We install packages `git` & `curl` using the apt package manager
 
 - We clone the Github repo using the installed `git` module. Here we use the variables we defined earlier in the `vars` section stating the repo link and also the destination of where to clone the repo in our case. 
+
+- We use ansible module `file` to make sure that our yolo project exists in path set in our case `path={{ yolo_location }}`
+
+- Next we start our docker-compose using the `command` module as here we use the docker compose command; `docker-compose -f {{ yolo_location }}/docker-compose.yml up -d` where the `{{ yolo_location }}/docker-compose.yml` is the location of our YAML docker-compose file for running docker compose. 
