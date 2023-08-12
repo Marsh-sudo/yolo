@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: yolo-app-deployments
   labels:
-    app: yolo-ap
+    app: yolo-app
 spec:
   replicas: 3
   selector:
@@ -15,13 +15,19 @@ spec:
         app: yolo-app-deployments
     spec:
       containers:
-      - name: yolo-app-deployments
-      labels:
-        app: yolo-ap
-        image: <Image>
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+      - name: yoloclient
+      # labels:
+      #   app: yolo-app
+        image: marshkelvin0/client
         ports:
-        - containerPort: <Port>
+        - containerPort: 3000
+          protocol: TCP
+          name: http
+      - name: yolobackend
+        image: marshkelvin0/backend
+          # resources:
+          # limits:
+          #   memory: "128Mi"
+          #   cpu: "500m"
+        ports:
+          - containerPort: 5000
