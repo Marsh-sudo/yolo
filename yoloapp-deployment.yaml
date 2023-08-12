@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: yolo-app-deployments
+  name: yolo-app-deployment
   labels:
     app: yolo-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: yolo-app-deployments
+      app: yolo-app-deployment
   template:
     metadata:
       labels:
-        app: yolo-app-deployments
+        app: yolo-app-deployment
     spec:
       containers:
       - name: yoloclient
@@ -24,10 +24,18 @@ spec:
           protocol: TCP
           name: http
       - name: yolobackend
-        image: marshkelvin0/backend
-          # resources:
-          # limits:
-          #   memory: "128Mi"
-          #   cpu: "500m"
+        image: marshkelvin0/backend 
         ports:
           - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yolo-app-service
+spec:
+  selector:
+    app: yolo-app-deployment
+  ports:
+  - port: 3000
+    targetPort: 3000
+
