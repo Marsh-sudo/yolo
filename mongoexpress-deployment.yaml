@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-mongo-express
+  labels:
+    app: mongo-backend-express
+spec:
+  selector:
+    matchLabels:
+      app: mongo-backend-express
+  template:
+    metadata:
+      labels:
+        app: mongo-backend-express
+    spec:
+      containers:
+      - name: backend-mongo-express
+        image: mongo-express
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 27017
+        env:
+          - name: MONGO_ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongodb-username
+          - name: MONGO_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongodb-password
+          - name: MONGO_EXPRESS_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: mongodb-configmap
+                key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb_express_service
+spec:
+  selector:
+    app: mongo-backend-express
+  type: LoadBalancer
+  ports:
+  - port: 8050
+    targetPort: 8050
+    protocal: TCP
