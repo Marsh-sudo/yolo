@@ -25,8 +25,15 @@ spec:
           name: http
       - name: yolobackend
         image: marshkelvin0/backend:1.0.1
+        volumeMounts:
+            - name: backend-persistent-storage
+              mountPath: /app/data
         ports:
           - containerPort: 5000
+      volumes:
+      - name: backend-persistent-storage
+        persistentVolumeClaim:
+            claimName: mongodb-pvc  # Use your PVC name here
       - name: mongodb
         image: mongo:latest
         ports:
