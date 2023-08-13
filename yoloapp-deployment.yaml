@@ -27,6 +27,16 @@ spec:
         image: marshkelvin0/backend 
         ports:
           - containerPort: 5000
+      - name: mongodb
+        image: mongo
+        ports:
+          - containerPort: 27018
+        env:
+          - name: MONGO_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-username
 ---
 apiVersion: v1
 kind: Service
