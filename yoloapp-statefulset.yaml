@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: backend-mongodb-statefulset
+spec:
+  serviceName: "mongodb-service"
+  replicas: 3  # Number of replica pods
+  selector:
+    matchLabels:
+      app: mongodb-yolo-backend
+  template:
+    metadata:
+      labels:
+        app: mongodb-yolo-backend
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-persistent-storage
+              mountPath: /data/db  # MongoDB data directory
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-persistent-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi  # Storage size per pod
