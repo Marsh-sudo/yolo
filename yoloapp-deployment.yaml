@@ -18,17 +18,17 @@ spec:
       - name: yoloclient
       # labels:
       #   app: yolo-app
-        image: marshkelvin0/client
+        image: marshkelvin0/client:1.0.0
         ports:
         - containerPort: 3000
           protocol: TCP
           name: http
       - name: yolobackend
-        image: marshkelvin0/backend 
+        image: marshkelvin0/backend:1.0.1
         ports:
           - containerPort: 5000
       - name: mongodb
-        image: mongo
+        image: mongo:latest
         ports:
           - containerPort: 27018
         env:
@@ -36,7 +36,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: mongodb-secret
-                key: mongo-username
+                key: mongodb-username
+          - name: MONGO_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongodb-password
 ---
 apiVersion: v1
 kind: Service
