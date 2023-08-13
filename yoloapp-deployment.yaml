@@ -16,8 +16,6 @@ spec:
     spec:
       containers:
       - name: yoloclient
-      # labels:
-      #   app: yolo-app
         image: marshkelvin0/client:1.0.0
         ports:
         - containerPort: 3000
@@ -27,7 +25,7 @@ spec:
         image: marshkelvin0/backend:1.0.1
         volumeMounts:
             - name: backend-persistent-storage
-              mountPath: /app/data
+              mountPath: /data/db
         ports:
           - containerPort: 5000
       volumes:
@@ -57,7 +55,9 @@ metadata:
 spec:
   selector:
     app: yolo-app-deployment
+  type: LoadBalancer
   ports:
   - port: 3000
     targetPort: 3000
+    protocal: TCP
 
