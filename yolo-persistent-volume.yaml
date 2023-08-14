@@ -4,7 +4,7 @@ metadata:
   name: mongodb-pv
 spec:
   capacity:
-    storage: 10Gi  # Specify the desired storage size
+    storage: 3Gi  # Specify the desired storage size
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain  
@@ -23,5 +23,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi  # Should match the PV capacity
+      storage: 3Gi  # Should match the PV capacity
   storageClassName: manual  # Should match the PV storageClassName
