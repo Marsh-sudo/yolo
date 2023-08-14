@@ -38,7 +38,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb_express_service
+  name: mongoexpress-service
 spec:
   selector:
     app: mongo-backend-express
@@ -46,4 +46,3 @@ spec:
   ports:
   - port: 8050
     targetPort: 8050
-    protocal: TCP
