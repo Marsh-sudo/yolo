@@ -1,6 +1,8 @@
 ## Yolo App on Kubernetes
 This nodejs and mongodb project name yolo is deployed on Google Kubernetes Engine
 
+RUNNING ON: 35.232.214.10:3005 
+
 # Prerequisite
 Make sure Minikube and kubectl are installed.
 
@@ -54,3 +56,4 @@ Next we create a PersistentVolumeClaim. Pods use PersistentVolumeClaims to reque
 In our deployment `spec.volumes` we create volumes for our backend container which will inherit our PVC name we created in the `yolo-persistent-volume.yaml` in our case `mongodb-pvc`
 
 - We also mount volume in backend container at mountPath `/data/db`
+
