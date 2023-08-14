@@ -17,7 +17,7 @@ spec:
         - name: mongodb
           image: mongo:latest
           ports:
-            - containerPort: 27017
+            - containerPort: 27019
           volumeMounts:
             - name: mongodb-persistent-storage
               mountPath: /data/db  # MongoDB data directory
@@ -28,4 +28,4 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 10Gi  # Storage size per pod
+            storage: 3Gi  # Storage size per pod
