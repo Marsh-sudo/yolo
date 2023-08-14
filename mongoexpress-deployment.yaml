@@ -14,14 +14,10 @@ spec:
         app: mongo-backend-express
     spec:
       containers:
-      - name: backend-mongo-express
+      - name: yolo-mongodb-express
         image: mongo-express
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
-          - containerPort: 27017
+          - containerPort: 8090
         env:
           - name: MONGO_ADMIN_USERNAME
             valueFrom:
@@ -33,7 +29,7 @@ spec:
               secretKeyRef:
                 name: mongodb-secret
                 key: mongodb-password
-          - name: MONGO_EXPRESS_SERVER
+          - name: MONGODBEXPRESS_SERVER
             valueFrom:
               configMapKeyRef:
                 name: mongodb-configmap
