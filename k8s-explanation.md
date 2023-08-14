@@ -1,8 +1,9 @@
 ## Yolo App on Kubernetes
 This nodejs and mongodb project name yolo is deployed on Google Kubernetes Engine
 
-RUNNING ON: 35.232.214.10:3005
-MONGOEXPRESS: 34.122.148.201:8050 
+- RUNNING ON: 35.232.214.10:3005
+
+- MONGOEXPRESS: 34.122.148.201:8050 
 
 # Prerequisite
 Make sure Minikube and kubectl are installed.
