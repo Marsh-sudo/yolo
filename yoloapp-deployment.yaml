@@ -8,11 +8,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: yolo-app-deployment
+      app: yolo-app
   template:
     metadata:
       labels:
-        app: yolo-app-deployment
+        app: yolo-app
     spec:
       containers:
       - name: yoloclient
@@ -54,10 +54,10 @@ metadata:
   name: yolo-app-service
 spec:
   selector:
-    app: yolo-app-deployment
+    app: yolo-app
   type: LoadBalancer
   ports:
-  - port: 3000
-    targetPort: 3000
+  - port: 3005
+    targetPort: 3005
     protocal: TCP
 
